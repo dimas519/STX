@@ -1,0 +1,38 @@
+version: '3.9'
+services:
+  postgres:
+    image: postgres:13.22-alpine3.22
+    container_name: stx-postgres-posts
+    restart: always
+    networks:
+      - stx
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: dimas
+      POSTGRES_PASSWORD: stx13579
+      POSTGRES_DB: mainSTX
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ../dbDump/postgres.sql:/docker-entrypoint-initdb.d/init.sql #data existing 
+
+  redis:
+    image: redis:8.2.1-bookworm
+    container_name: stx-redis-user
+    restart: always
+    networks:
+      - stx
+    ports:
+      - "6379:6379"
+    volumes:
+        - ../dbDump/dump.rdb:/data/dump.rdb #data existing
+
+
+
+
+volumes:
+  postgres-data:
+
+networks:
+  stx:
+    driver: bridge
