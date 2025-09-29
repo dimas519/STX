@@ -1,16 +1,15 @@
 package com.dimas519.api2;
 
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 
+import org.springframework.jdbc.core.JdbcTemplate;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
@@ -37,10 +36,10 @@ public class API2Controller {
 
 
             ObjectNode wrapper = jsonMapper.createObjectNode();
-            wrapper.set("row", node); // elementnya <post>...</post>
+            wrapper.set("row", node);//
 
 
-            // convert ke XML string
+
             XmlMapper xmlMapper = new XmlMapper();
 
             String xml = xmlMapper.writer()
@@ -56,7 +55,7 @@ public class API2Controller {
 
     }
 
-    @GetMapping("/posts")
+    @GetMapping(value="/posts",produces="text/xml")
     public String getPost(){
         List<String> data=getData();
 

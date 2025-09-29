@@ -1,9 +1,13 @@
 package com.dimas519.api1;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
-public class TodosBook {
+
+@Component
+public class TodosPost {
     private WebClient.Builder webClient;
 
     private final  String api1="https://jsonplaceholder.typicode.com/todos";
@@ -19,12 +23,18 @@ public class TodosBook {
     private boolean api2Ssl;
 
 
-    public TodosBook(WebClient.Builder webClientBuilder){
+    public TodosPost(WebClient.Builder webClientBuilder){
         this.webClient = webClientBuilder;
     }
 
 
-    private String getTodos() {
+    @PostConstruct
+    public void init() {
+        this.api2 = (api2Ssl ? "https://" : "http://") + api2Url + ":" + api2Port + "/posts";
+    }
+
+
+    public String getTodos() {
         WebClient client = this.webClient
                 .baseUrl(api1)
                 .build();
@@ -36,10 +46,8 @@ public class TodosBook {
     }
 
 
-    private String getPosts(){
-        if(api2==null) {
-            this.api2 = (api2Ssl ? "https://" : "http://") + api2Url + ":" + api2Port + "/posts";
-        }
+    public String getPosts(){
+        System.out.println(api2);
         WebClient client = this.webClient
                 .baseUrl(this.api2)
                 .build();
@@ -50,7 +58,7 @@ public class TodosBook {
                 .block();
     }
 
-    public getTasks
+
 
 
 }

@@ -1,4 +1,3 @@
-version: '3.9'
 services:
   postgres:
     image: postgres:13.22-alpine3.22
@@ -7,7 +6,7 @@ services:
     networks:
       - stx
     ports:
-      - "5432:5432"
+      - "5432"
     environment:
       POSTGRES_USER: dimas
       POSTGRES_PASSWORD: stx13579
@@ -23,10 +22,72 @@ services:
     networks:
       - stx
     ports:
-      - "6379:6379"
+      - "6379"
     volumes:
         - ../dbDump/dump.rdb:/data/dump.rdb #data existing
 
+
+  api2:
+    build:
+      context: ../api2/          # lokasi Dockerfile
+      dockerfile: Dockerfile  # nama file Dockerfile (default: Dockerfile)
+    container_name: stx-api2
+    # restart: always
+    depends_on:
+      - postgres
+      # - redis
+    networks:
+      - stx
+    ports:
+      - "8082"
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=mainSTX
+      - DB_USER=dimas
+      - DB_PASSWORD=stx13579
+
+  api1:
+    build:
+      context: ../api1/         # lokasi Dockerfile
+      dockerfile: Dockerfile  # nama file Dockerfile (default: Dockerfile)
+    container_name: stx-api1
+    # restart: always
+    depends_on:
+      - api2
+      - redis
+    networks:
+      - stx
+    ports:
+      - "8081"
+    environment:
+      - api2_Url=api2
+      - api2_Port=8082
+      - api2_SSL=false
+      - DB_HOST=redis
+      - DB_PORT=6379
+      - DB_PASSWORD=stx02468
+
+
+    apiGateway:
+    build:
+      context: ../api1/         # lokasi Dockerfile
+      dockerfile: Dockerfile  # nama file Dockerfile (default: Dockerfile)
+    container_name: stxApiGateway
+    # restart: always
+    depends_on:
+      - api1
+    networks:
+      - stx
+    ports:
+      - "8081"
+    environment:
+      - api2_Url=api2
+      - api2_Port=8082
+      - api2_SSL=false
+      - DB_HOST=redis
+      - DB_PORT=6379
+      - DB_PASSWORD=stx02468
 
 
 
