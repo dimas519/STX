@@ -30,8 +30,9 @@ services:
   api2:
     build:
       context: ../api2/          # lokasi Dockerfile
-      dockerfile: Dockerfile  # nama file Dockerfile (default: Dockerfile)
-    container_name: stx-api2
+      dockerfile: Dockerfile-graal  # nama file Dockerfile (default: Dockerfile)
+    image: gchr.io/dimas519/spring-api2-graal:latest
+    container_name: stx-api2-graal
     # restart: always
     depends_on:
       - postgres
@@ -50,8 +51,9 @@ services:
   api1:
     build:
       context: ../api1/         # lokasi Dockerfile
-      dockerfile: Dockerfile  # nama file Dockerfile (default: Dockerfile)
-    container_name: stx-api1
+      dockerfile: Dockerfile-graal  # nama file Dockerfile (default: Dockerfile)
+    container_name: stx-api1-graal
+    image: gchr.io/dimas519/spring-api1-graal:latest
     # restart: always
     depends_on:
       - api2
@@ -69,25 +71,26 @@ services:
       - DB_PASSWORD=stx02468
 
 
-    apiGateway:
-    build:
-      context: ../api1/         # lokasi Dockerfile
-      dockerfile: Dockerfile  # nama file Dockerfile (default: Dockerfile)
-    container_name: stxApiGateway
-    # restart: always
-    depends_on:
-      - api1
-    networks:
-      - stx
-    ports:
-      - "8081"
-    environment:
-      - api2_Url=api2
-      - api2_Port=8082
-      - api2_SSL=false
-      - DB_HOST=redis
-      - DB_PORT=6379
-      - DB_PASSWORD=stx02468
+  # apiGateway:
+  #   build:
+  #     context: ../api1/         # lokasi Dockerfile
+  #     dockerfile: Dockerfile  # nama file Dockerfile (default: Dockerfile)
+  #   container_name: stxApiGateway
+  # image: gchr.io/dimas519/SpringGateway:$(date +%d-%m-%Y) 
+  #   # restart: always
+  #   depends_on:
+  #     - api1
+  #   networks:
+  #     - stx
+  #   ports:
+  #     - "8081"
+  #   environment:
+  #     - api2_Url=api2
+  #     - api2_Port=8082
+  #     - api2_SSL=false
+  #     - DB_HOST=redis
+  #     - DB_PORT=6379
+  #     - DB_PASSWORD=stx02468
 
 
 

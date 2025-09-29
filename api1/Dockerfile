@@ -1,19 +1,18 @@
-FROM ghcr.io/graalvm/native-image-community:21 AS buildjar
+FROM maven:3.9-eclipse-temurin-17 AS builderjar
+WORKDIR /api1
+COPY . .
+RUN mvn clean package -DskipTests
+
+
+FROM alpine/java:17-jre
+ 
 WORKDIR /api1
 
-COPY .mvn .mvn 
-COPY mvnw ./
-RUN chmod +x mvnw
+# copy hasil build
+COPY --from=builderjar /api1/target/api1.jar api1.jar
 
-
-COPY ./pom.xml .
-COPY src ./src
-# RUN mvn  clean package -DskipTests --batch-mode
-RUN ./mvnw -e --batch-mode -DskipTests=true -Pnative native:compile
-
-# Stage 2: Run
-FROM oraclelinux:9-slim
-WORKDIR /api1
-COPY --from=buildjar /api1/target/api1  ./api1
+# Expose port default Spring Boot
 EXPOSE 8081
-ENTRYPOINT ["./api1"]
+
+# Gunakan JVM mode (bukan native)
+ENTRYPOINT ["java","-jar","api1.jar"]

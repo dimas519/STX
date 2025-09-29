@@ -32,30 +32,23 @@ public class API1Controller {
 
 
 
-    @GetMapping(value = "/bookCombine",produces = "text/json")
-    public String getBookCombine() throws JsonProcessingException {
+    @GetMapping(value = "/userCombine",produces = "text/json")
+    public String getUserCombine() throws JsonProcessingException {
 
 
 
-        System.out.println("getTodos");
+        System.out.println("/userCombine");
         String todos=todosPost.getTodos();
-//        System.out.println(todos);
-//
 
-        System.out.println("getposts");
         String posts=todosPost.getPosts();
-//        System.out.println(posts);
 
-        System.out.println("getUser");
+
         String getUser=redisConnector.getData("user:1");
-//        System.out.println(getUser);
 
 
-        System.out.println("combining");
+
         String result=CombineUser.getResult(getUser,todos,posts);
 
-
-        System.out.println(result);
 
 
 

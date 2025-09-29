@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.dimas519</groupId>
-    <artifactId>api2</artifactId>
+    <artifactId>apigateway</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>api2</name>
-    <description>api2</description>
+    <name>apigateway</name>
+    <description>apigateway</description>
     <url/>
     <licenses>
         <license/>
@@ -35,34 +35,16 @@
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
 
+<!--        enabling spring annot-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <scope>runtime</scope>
-        </dependency>
+<!--pemanggolan ke 3rd party-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
-        </dependency>
-
-
-
-<!--untuk converter ke xml-->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.19.2</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.dataformat</groupId>
-            <artifactId>jackson-dataformat-xml</artifactId>
-            <version>2.19.2</version>
+            <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
 
 
@@ -76,7 +58,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
-        <finalName>api2</finalName>
+        <finalName>apigw</finalName>
     </build>
 
 </project>
