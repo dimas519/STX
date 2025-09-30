@@ -71,7 +71,7 @@ services:
       - DB_PASSWORD=stx02468
 
 
-  apiGateway:
+  apigateway:
     build:
       context: ./apigateway         # lokasi Dockerfile
       dockerfile: Dockerfile  # nama file Dockerfile (default: Dockerfile)
