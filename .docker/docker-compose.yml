@@ -4,7 +4,7 @@ services:
     container_name: stx-postgres-posts
     restart: always
     networks:
-      - stx
+      - stx-graal
     ports:
       - "5432"
     environment:
@@ -20,7 +20,7 @@ services:
     container_name: stx-redis-user
     restart: always
     networks:
-      - stx
+      - stx-graal
     ports:
       - "6379"
     volumes:
@@ -38,9 +38,9 @@ services:
       - postgres
       # - redis
     networks:
-      - stx
+      - stx-graal
     ports:
-      - "8082"
+      - "8092:8082"
     environment:
       - DB_HOST=postgres
       - DB_PORT=5432
@@ -59,9 +59,9 @@ services:
       - api2
       - redis
     networks:
-      - stx
+      - stx-graal
     ports:
-      - "8081"
+      - "8091:8081"
     environment:
       - api2_Url=api2
       - api2_Port=8082
@@ -70,33 +70,28 @@ services:
       - DB_PORT=6379
       - DB_PASSWORD=stx02468
 
-
-  # apiGateway:
-  #   build:
-  #     context: ../api1/         # lokasi Dockerfile
-  #     dockerfile: Dockerfile  # nama file Dockerfile (default: Dockerfile)
-  #   container_name: stxApiGateway
-  # image: gchr.io/dimas519/SpringGateway:$(date +%d-%m-%Y) 
-  #   # restart: always
-  #   depends_on:
-  #     - api1
-  #   networks:
-  #     - stx
-  #   ports:
-  #     - "8081"
-  #   environment:
-  #     - api2_Url=api2
-  #     - api2_Port=8082
-  #     - api2_SSL=false
-  #     - DB_HOST=redis
-  #     - DB_PORT=6379
-  #     - DB_PASSWORD=stx02468
-
+  apiGateway:
+      build:
+        context: ../apigateway/        # lokasi Dockerfile
+        dockerfile: Dockerfile-graal  # nama file Dockerfile (default: Dockerfile)
+      container_name: stxApiGateway
+      image: gchr.io/dimas519/spring-apigateway:latest
+      # restart: always
+      depends_on:
+        - api1
+      networks:
+        - stx-graal
+      ports:
+        - "8090:8080"
+      environment:
+        - API1_URL=api1
+        - API1_PORT=8081
+        - API1_SSL=false
 
 
 volumes:
   postgres-data:
 
 networks:
-  stx:
+  stx-graal:
     driver: bridge
